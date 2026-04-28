@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A procedural static website about later Wittgenstein's language games, staged as a nocturnal market of ordinary uses."
+    />
+    <title>Night Market for Meaning | Language Games</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <canvas id="signalCanvas" aria-hidden="true"></canvas>
+
+    <header class="site-header" aria-label="Project header">
+      <a class="mark" href="#top" aria-label="Night Market for Meaning">
+        <span class="mark-grid" aria-hidden="true"></span>
+        <span>Night Market for Meaning</span>
+      </a>
+      <nav class="section-links" aria-label="Sections">
+        <a href="#market">Market</a>
+        <a href="#routes">Routes</a>
+        <a href="#family">Family</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="kicker">Later Wittgenstein / language games</p>
+          <h1 id="hero-title">Words after midnight, meaning by use.</h1>
+          <p class="lede">
+            A public room for ordinary words: each token changes its work when it
+            crosses a counter, a platform, a family table, or a stage door.
+          </p>
+        </div>
+
+        <section class="meaning-lab" id="market" aria-label="Interactive language game">
+          <div class="lab-topline">
+            <p class="lab-label">Context rail</p>
+            <div class="status-light" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+
+          <div class="context-rail" id="contextRail" aria-label="Contexts"></div>
+
+          <article class="readout" aria-live="polite">
+            <div class="readout-primary">
+              <p class="readout-label">Current use</p>
+              <h2 id="wordTitle">light</h2>
+              <p id="utterance" class="utterance"></p>
+            </div>
+            <dl class="readout-meta">
+              <div>
+                <dt>Scene</dt>
+                <dd id="sceneValue"></dd>
+              </div>
+              <div>
+                <dt>Work</dt>
+                <dd id="workValue"></dd>
+              </div>
+              <div>
+                <dt>Rule feel</dt>
+                <dd id="ruleValue"></dd>
+              </div>
+            </dl>
+          </article>
+
+          <div class="word-deck" id="wordDeck" aria-label="Word tokens"></div>
+
+          <div class="meter-row" aria-label="Simulated pressure meters">
+            <div class="meter" style="--level: 44%"><span></span></div>
+            <div class="meter" style="--level: 72%"><span></span></div>
+            <div class="meter" style="--level: 31%"><span></span></div>
+            <div class="meter" style="--level: 60%"><span></span></div>
+            <button class="shuffle-button" id="shuffleButton" type="button">reshuffle use</button>
+          </div>
+        </section>
+      </section>
+
+      <section class="route-band" id="routes" aria-labelledby="routes-title">
+        <div class="route-copy">
+          <p class="kicker">Rules in traffic</p>
+          <h2 id="routes-title">The same word takes different exits.</h2>
+        </div>
+        <div class="route-wall" aria-label="Route board">
+          <ol class="dispatch-list" id="dispatchList"></ol>
+        </div>
+      </section>
+
+      <section class="scroll-sequence" aria-label="Scroll sequence">
+        <div class="sequence-sticky">
+          <div class="rule-strip" aria-hidden="true">
+            <span>naming</span>
+            <span>asking</span>
+            <span>repairing</span>
+            <span>counting</span>
+            <span>joking</span>
+            <span>refusing</span>
+          </div>
+          <div class="sequence-grid">
+            <div class="sequence-frame">
+              <span class="frame-line"></span>
+              <span class="frame-line"></span>
+              <span class="frame-line"></span>
+              <span class="frame-line"></span>
+            </div>
+            <div class="sequence-copy">
+              <p class="kicker">No private neon</p>
+              <h2>Meaning is not stored behind the face.</h2>
+              <p>
+                It happens at the counter: the receipt, the glance, the repeated
+                mistake, the corrected order, the joke that only lands because a
+                room already knows the game.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="family-band" id="family" aria-labelledby="family-title">
+        <div class="family-copy">
+          <p class="kicker">Family resemblance</p>
+          <h2 id="family-title">A word keeps relatives, not one hidden skeleton.</h2>
+        </div>
+        <div class="family-grid" id="familyGrid"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Original procedural artwork and text. No quotations, audio, covers, or third-party images.</p>
+      <a href="#top">return to market</a>
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

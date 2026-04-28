@@ -1,0 +1,19 @@
+{
+  "name": "2026-04-29-idea-language-games-night-market",
+  "version": "1.0.0",
+  "private": false,
+  "description": "A polished static website about later Wittgenstein's language games as a nocturnal market of ordinary uses.",
+  "type": "module",
+  "scripts": {
+    "start": "node tools/static-server.mjs",
+    "check": "node --check script.js && node --check tools/static-server.mjs && node --check tools/check-site.mjs && node tools/check-site.mjs"
+  },
+  "keywords": [
+    "static-site",
+    "procedural-art",
+    "language-games",
+    "wittgenstein",
+    "canvas"
+  ],
+  "license": "MIT"
+}
