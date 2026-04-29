@@ -12,6 +12,13 @@
   </head>
   <body>
     <canvas id="field" aria-hidden="true"></canvas>
+    <div class="wittgenstein-background" aria-hidden="true">
+      <span style="--x: 7%; --y: 18%; --r: -8deg">§2 / slab</span>
+      <span style="--x: 70%; --y: 16%; --r: 7deg">§66 / game</span>
+      <span style="--x: 13%; --y: 70%; --r: 5deg">+2 / §185</span>
+      <span style="--x: 72%; --y: 66%; --r: -6deg">S / §258</span>
+      <span style="--x: 44%; --y: 84%; --r: 3deg">box / §293</span>
+    </div>
     <div class="scroll-progress" aria-hidden="true"><span id="scrollBar"></span></div>
 
     <header class="site-header">
@@ -44,16 +51,26 @@
             而是在命令、请求、玩笑、祈祷、测量、道歉和纠错中取得工作。
           </p>
         </div>
-        <div class="opening-instrument" aria-label="动态概念仪表">
+        <div class="opening-instrument" aria-label="经典例子实验台">
           <div class="instrument-top">
-            <span>ordinary use</span>
+            <span>classic examples</span>
             <span id="globalPercent">0%</span>
           </div>
-          <div class="word-orbit" aria-hidden="true">
-            <span>说</span><span>做</span><span>懂</span><span>改</span>
+          <div class="example-tabs" id="exampleTabs" aria-label="选择维特根斯坦书中经典例子"></div>
+          <article class="example-stage" aria-live="polite">
+            <div class="example-copy">
+              <p id="exampleSource" class="example-source">《哲学研究》§2</p>
+              <h2 id="exampleTitle">建筑工人语言游戏</h2>
+              <p id="exampleBody"></p>
+            </div>
+            <div class="example-visual" id="exampleVisual" aria-hidden="true"></div>
+            <div class="example-footer">
+              <button id="exampleAction" class="example-action" type="button">推进例子</button>
+              <span id="exampleHint">点击右侧实验台，观察“意义”怎样随用法变化。</span>
+            </div>
           </div>
-          <p>
-            向下滚动：每一段都会把同一个“意义”问题放进不同的生活场景里。
+          <p class="instrument-note">
+            这些都是书中经典例子的原创改写与界面化处理；出处标到章节，不搬运长段译文。
           </p>
         </div>
       </section>
@@ -80,6 +97,7 @@
               一个词的意义要看它在什么活动里被训练、期待、误解和纠正。
               命令、报告、提问、讲笑话、祈祷、讨价还价、给孩子起名，都不是同一套抽象机器。
             </p>
+            <cite>源自《哲学研究》§23 的语言游戏清单；此处为原创改写。</cite>
           </div>
           <div class="practice-board" id="practiceBoard" aria-label="语言游戏活动面板"></div>
         </div>
@@ -100,6 +118,7 @@
               同一个词穿过不同场景，会承担不同工作。它可能是许可、方向、证据、费用、动作提示，
               或一次关系修复。意义在用法里显形，不在词背后的私人小盒子里。
             </p>
+            <cite>参照《哲学研究》§43 “意义与使用”的核心转向；此处为原创解释。</cite>
           </div>
           <div class="use-switcher">
             <div class="use-word">
@@ -126,6 +145,7 @@
               “游戏”不是靠一个所有例子都共享的特征站稳。棋、追逐、赌局、独奏练习、文字游戏，
               像一家人：眼神像这个，步态像那个，声调又像另一个。
             </p>
+            <cite>源自《哲学研究》§§65–71 关于“游戏”和家族相似性的讨论。</cite>
           </div>
           <div class="family-lab">
             <div class="family-map" id="familyMap" aria-label="家族相似性网络"></div>
@@ -149,6 +169,7 @@
               任何规则都能被新的解释拖走。真正让“继续同样做”成立的，不是脑内多藏一条解释，
               而是训练、示范、纠错和共同生活里稳定下来的判断。
             </p>
+            <cite>源自《哲学研究》§185 附近的 “+2” 规则遵循例子。</cite>
           </div>
           <div class="rule-machine" aria-label="规则遵循轨道">
             <div class="rule-readout">
@@ -176,6 +197,7 @@
               这不是否认疼痛、情绪或内心生活。问题是：如果符号的判准完全藏在个人瞬间里，
               我就无法区分“记对了”和“以为自己记对了”。
             </p>
+            <cite>源自《哲学研究》§258 的感觉日记 “S” 例子与《哲学研究》§293 的甲虫盒子。</cite>
           </div>
           <div class="diary-machine">
             <div class="diary-strip" id="diaryStrip" aria-label="私人日记符号"></div>

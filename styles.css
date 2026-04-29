@@ -37,9 +37,11 @@ body {
   overflow-x: hidden;
   color: var(--paper);
   background:
+    radial-gradient(circle at 18% 18%, rgba(216, 162, 60, 0.16), transparent 24rem),
+    radial-gradient(circle at 78% 16%, rgba(111, 143, 163, 0.16), transparent 28rem),
     linear-gradient(120deg, rgba(190, 63, 50, 0.15), transparent 32rem),
-    linear-gradient(230deg, rgba(95, 175, 125, 0.11), transparent 34rem),
-    var(--black);
+    linear-gradient(230deg, rgba(95, 175, 125, 0.12), transparent 34rem),
+    linear-gradient(135deg, #07110e 0%, #15140d 38%, #111618 72%, #050606 100%);
 }
 
 body::before {
@@ -54,6 +56,19 @@ body::before {
     linear-gradient(90deg, rgba(239, 231, 208, 0.045) 1px, transparent 1px);
   background-size: 56px 56px;
   transform: translateY(var(--grid-shift));
+}
+
+body::after {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  content: "";
+  opacity: 0.12;
+  background:
+    repeating-linear-gradient(8deg, transparent 0 18px, rgba(239, 231, 208, 0.08) 19px 20px),
+    repeating-linear-gradient(96deg, transparent 0 41px, rgba(239, 231, 208, 0.05) 42px 43px);
+  mix-blend-mode: screen;
 }
 
 a {
@@ -78,6 +93,59 @@ button:focus-visible {
   z-index: -3;
   width: 100%;
   height: 100%;
+}
+
+.wittgenstein-background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.wittgenstein-background::before,
+.wittgenstein-background::after {
+  position: absolute;
+  content: "";
+  border: 1px solid rgba(239, 231, 208, 0.08);
+  opacity: 0.7;
+}
+
+.wittgenstein-background::before {
+  left: 5vw;
+  top: 14vh;
+  width: 34vw;
+  height: 46vh;
+  background:
+    linear-gradient(90deg, transparent 0 28%, rgba(239, 231, 208, 0.08) 28.4% 28.8%, transparent 29%),
+    linear-gradient(180deg, transparent 0 34%, rgba(239, 231, 208, 0.08) 34.4% 34.8%, transparent 35%);
+  transform: rotate(-4deg);
+}
+
+.wittgenstein-background::after {
+  right: 6vw;
+  bottom: 8vh;
+  width: 28vw;
+  height: 28vw;
+  max-height: 44vh;
+  background:
+    radial-gradient(circle at 32% 30%, rgba(216, 162, 60, 0.16), transparent 0.6rem),
+    radial-gradient(circle at 67% 34%, rgba(95, 175, 125, 0.16), transparent 0.6rem),
+    radial-gradient(circle at 48% 68%, rgba(190, 63, 50, 0.16), transparent 0.6rem);
+  transform: rotate(8deg);
+}
+
+.wittgenstein-background span {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  color: rgba(239, 231, 208, 0.16);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.5rem, 4vw, 5rem);
+  font-style: italic;
+  font-weight: 700;
+  transform: rotate(var(--r));
+  white-space: nowrap;
 }
 
 .scroll-progress {
@@ -224,10 +292,10 @@ h2 {
 }
 
 h1 {
-  max-width: 12.5ch;
+  max-width: 14ch;
   margin-top: 1rem;
-  font-size: clamp(3.7rem, 10.5vw, 10.6rem);
-  line-height: 0.93;
+  font-size: clamp(3rem, 7.8vw, 7.8rem);
+  line-height: 1.11;
 }
 
 .lede {
@@ -239,12 +307,13 @@ h1 {
 }
 
 .opening-instrument {
-  min-height: 28rem;
+  min-height: 39rem;
   padding: clamp(1rem, 2.3vw, 1.4rem);
   border: 1px solid rgba(239, 231, 208, 0.16);
   background:
-    linear-gradient(180deg, rgba(239, 231, 208, 0.08), rgba(239, 231, 208, 0.025)),
-    rgba(6, 8, 7, 0.68);
+    linear-gradient(145deg, rgba(239, 231, 208, 0.1), rgba(239, 231, 208, 0.025)),
+    linear-gradient(30deg, rgba(216, 162, 60, 0.06), rgba(95, 175, 125, 0.06)),
+    rgba(6, 11, 9, 0.74);
   backdrop-filter: blur(16px);
 }
 
@@ -258,74 +327,265 @@ h1 {
   text-transform: uppercase;
 }
 
-.word-orbit {
-  position: relative;
+.example-tabs {
   display: grid;
-  width: min(21rem, 100%);
-  aspect-ratio: 1;
-  margin: 2.5rem auto;
-  place-items: center;
-  border: 1px solid rgba(239, 231, 208, 0.16);
-  border-radius: 50%;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.48rem;
+  margin-top: 1rem;
 }
 
-.word-orbit::before,
-.word-orbit::after {
-  position: absolute;
-  inset: 17%;
-  border: 1px solid rgba(239, 231, 208, 0.12);
-  border-radius: 50%;
-  content: "";
+.example-tab {
+  min-height: 2.5rem;
+  padding: 0.55rem 0.5rem;
+  border: 1px solid rgba(239, 231, 208, 0.14);
+  color: rgba(239, 231, 208, 0.72);
+  background: rgba(239, 231, 208, 0.045);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 850;
+  transition:
+    background 180ms ease,
+    color 180ms ease,
+    transform 180ms ease,
+    border-color 180ms ease;
 }
 
-.word-orbit::after {
-  inset: 34%;
+.example-tab:hover {
+  transform: translateY(-1px);
+  border-color: rgba(239, 231, 208, 0.34);
+  color: var(--paper);
+}
+
+.example-tab.is-active {
+  border-color: var(--accent);
+  color: var(--black);
   background: var(--accent);
-  border: 0;
-  border-radius: 0;
-  opacity: 0.86;
-  transform: rotate(var(--orbit-rotation));
 }
 
-.word-orbit span {
-  position: absolute;
+.example-stage {
   display: grid;
-  width: 4.2rem;
-  aspect-ratio: 1;
-  place-items: center;
+  grid-template-rows: auto minmax(13rem, 1fr) auto;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(239, 231, 208, 0.16);
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.22), transparent),
+    rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+}
+
+.example-copy {
+  display: grid;
+  gap: 0.46rem;
+}
+
+.example-source,
+.example-copy h2,
+.example-copy p {
+  margin: 0;
+}
+
+.example-source {
+  color: var(--accent);
+  font-size: 0.74rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.example-copy h2 {
+  color: var(--paper);
+  font-family: "Songti SC", "Noto Serif SC", Georgia, serif;
+  font-size: clamp(1.35rem, 2.6vw, 2rem);
+  line-height: 1.18;
+}
+
+.example-copy p {
+  color: rgba(239, 231, 208, 0.72);
+  font-size: 0.92rem;
+  line-height: 1.62;
+}
+
+.example-visual {
+  position: relative;
+  min-height: 14rem;
+  border: 1px solid rgba(239, 231, 208, 0.12);
+  background:
+    linear-gradient(rgba(239, 231, 208, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(239, 231, 208, 0.04) 1px, transparent 1px),
+    rgba(4, 8, 7, 0.52);
+  background-size: 26px 26px;
+  overflow: hidden;
+}
+
+.example-visual::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: radial-gradient(circle at var(--stage-x, 40%) var(--stage-y, 45%), rgba(216, 162, 60, 0.18), transparent 35%);
+}
+
+.example-footer {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.example-action {
+  min-height: 2.75rem;
+  padding: 0 0.85rem;
+  border: 0;
   color: var(--black);
   background: var(--paper);
-  border-radius: 50%;
-  font-size: 1.25rem;
+  cursor: pointer;
+  font-size: 0.78rem;
   font-weight: 900;
-  transform: rotate(calc(var(--base-rot) + var(--orbit-rotation))) translateY(-9rem)
-    rotate(calc(var(--base-unrot) - var(--orbit-rotation)));
+  text-transform: uppercase;
 }
 
-.word-orbit span:nth-child(1) {
-  --base-rot: 0deg;
-  --base-unrot: 0deg;
+#exampleHint {
+  color: rgba(239, 231, 208, 0.6);
+  font-size: 0.82rem;
+  line-height: 1.42;
 }
 
-.word-orbit span:nth-child(2) {
-  --base-rot: 90deg;
-  --base-unrot: -90deg;
+.instrument-note {
+  margin-top: 1rem;
+  color: rgba(239, 231, 208, 0.62);
+  font-size: 0.88rem;
+  line-height: 1.64;
 }
 
-.word-orbit span:nth-child(3) {
-  --base-rot: 180deg;
-  --base-unrot: -180deg;
+.shape,
+.apple,
+.box-card,
+.series-number,
+.trait-pill,
+.diary-token,
+.beetle-box {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(239, 231, 208, 0.18);
+  color: rgba(239, 231, 208, 0.8);
+  background: rgba(239, 231, 208, 0.07);
+  font-weight: 900;
 }
 
-.word-orbit span:nth-child(4) {
-  --base-rot: 270deg;
-  --base-unrot: -270deg;
+.shape {
+  width: 4rem;
+  height: 3rem;
+  left: var(--x);
+  top: var(--y);
+  transform: translate(-50%, -50%) translateY(var(--lift, 0px));
+  transition:
+    transform 260ms ease,
+    background 260ms ease,
+    color 260ms ease;
 }
 
-.opening-instrument p {
-  margin: 0;
-  color: rgba(239, 231, 208, 0.68);
-  line-height: 1.7;
+.shape.is-called,
+.apple.is-picked,
+.series-number.is-lit,
+.diary-token.is-lit,
+.beetle-box.is-open {
+  color: var(--black);
+  background: var(--accent);
+}
+
+.call-line {
+  position: absolute;
+  left: 7%;
+  top: 11%;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid rgba(239, 231, 208, 0.18);
+  color: var(--accent);
+  background: rgba(0, 0, 0, 0.34);
+  font-size: 0.86rem;
+  font-weight: 850;
+}
+
+.apple {
+  width: 2.1rem;
+  height: 2.1rem;
+  left: var(--x);
+  top: var(--y);
+  border-radius: 50%;
+  transition: background 240ms ease;
+}
+
+.slip {
+  position: absolute;
+  left: 8%;
+  bottom: 9%;
+  padding: 0.7rem;
+  color: var(--black);
+  background: rgba(239, 231, 208, 0.88);
+  font-family: Georgia, serif;
+  font-weight: 900;
+}
+
+.box-card {
+  width: 5.2rem;
+  height: 4rem;
+  left: var(--x);
+  top: var(--y);
+  transform: translate(-50%, -50%) rotate(var(--r, 0deg));
+  white-space: pre-line;
+}
+
+.series-number {
+  width: 3.5rem;
+  height: 3.5rem;
+  left: var(--x);
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+.trait-pill {
+  left: var(--x);
+  top: var(--y);
+  padding: 0.45rem 0.6rem;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+}
+
+.diary-token {
+  width: 3rem;
+  height: 3.8rem;
+  left: var(--x);
+  top: var(--y);
+  transform: translate(-50%, -50%) rotate(var(--r, 0deg));
+  font-family: Georgia, serif;
+}
+
+.beetle-box {
+  width: 4.8rem;
+  height: 4.4rem;
+  left: var(--x);
+  top: var(--y);
+  transform: translate(-50%, -50%);
+}
+
+.beetle-box span {
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.beetle-box.is-open span {
+  opacity: 1;
+}
+
+.public-use {
+  position: absolute;
+  right: 6%;
+  bottom: 8%;
+  max-width: 58%;
+  color: rgba(239, 231, 208, 0.72);
+  font-size: 0.8rem;
+  line-height: 1.5;
 }
 
 .thesis-strip {
@@ -375,6 +635,15 @@ h1 {
   color: rgba(239, 231, 208, 0.75);
   font-size: clamp(1rem, 1.5vw, 1.22rem);
   line-height: 1.85;
+}
+
+.chapter-copy cite {
+  display: block;
+  margin-top: 1rem;
+  color: rgba(239, 231, 208, 0.56);
+  font-size: 0.85rem;
+  font-style: normal;
+  line-height: 1.6;
 }
 
 .practice-board,
@@ -775,17 +1044,21 @@ h1 {
   }
 
   h1 {
-    max-width: 9ch;
+    max-width: 12ch;
+    font-size: clamp(2.8rem, 13vw, 5rem);
+    line-height: 1.08;
   }
 
   .opening-instrument {
     min-height: auto;
   }
 
-  .word-orbit span {
-    width: 3.3rem;
-    transform: rotate(calc(var(--base-rot) + var(--orbit-rotation))) translateY(-7rem)
-      rotate(calc(var(--base-unrot) - var(--orbit-rotation)));
+  .example-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .example-footer {
+    grid-template-columns: 1fr;
   }
 
   .chapter-copy h2 {

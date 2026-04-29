@@ -57,6 +57,63 @@ const chapters = [
   },
 ];
 
+const classicExamples = [
+  {
+    id: "augustine",
+    label: "苹果纸条",
+    source: "《哲学研究》§1",
+    title: "“五个红苹果”不是简单贴标签",
+    body: "纸条、店员、抽屉、数数、颜色训练一起工作。单词不是孤立指物，整套活动才让它可执行。",
+    action: "拿一枚苹果",
+    hint: "每点一次，纸条上的数量变成实际动作；意义在执行链里显形。",
+  },
+  {
+    id: "builders",
+    label: "石板工地",
+    source: "《哲学研究》§2",
+    title: "建筑工人语言游戏",
+    body: "A 呼叫材料，B 按训练递出对应物。这里的词首先是动作提示，不是词典里静止的定义。",
+    action: "换一个呼叫",
+    hint: "观察同样简陋的词表怎样足以构成一个完整的小语言。",
+  },
+  {
+    id: "games",
+    label: "游戏亲缘",
+    source: "《哲学研究》§§65–71",
+    title: "没有共同骨架，仍然是一族",
+    body: "棋、球、赌局、儿童追逐互相交叠：有些共享规则，有些共享胜负，有些共享技巧，但没有一根万能骨头。",
+    action: "切换相似点",
+    hint: "高亮会在特征之间移动，形成交错的家族相似性。",
+  },
+  {
+    id: "plus",
+    label: "+2 学生",
+    source: "《哲学研究》§185",
+    title: "“继续同样做”需要训练和纠错",
+    body: "学生会写 2, 4, 6, 8，但到远处突然分叉。规则不是脑中轨道，公共实践让下一步可被判定。",
+    action: "继续序列",
+    hint: "序列越往后，越能看到解释本身不足以固定规则。",
+  },
+  {
+    id: "diary",
+    label: "S 日记",
+    source: "《哲学研究》§258",
+    title: "私人记号缺少校准尺",
+    body: "如果我只在私密感觉出现时写 S，却没有独立判准，就很难区分“用对了”和“觉得用对了”。",
+    action: "加入公共判准",
+    hint: "表情、求助、检查和可学习反应进入后，记号才获得可纠错角色。",
+  },
+  {
+    id: "beetle",
+    label: "甲虫盒子",
+    source: "《哲学研究》§293",
+    title: "盒子里有什么，不自动决定词义",
+    body: "每个人都有盒子，却不能看别人的。若“甲虫”仍能被公共使用，词的工作不靠盒中私物支撑。",
+    action: "打开盒子",
+    hint: "盒中内容可以不同，公共用法仍保持可理解。",
+  },
+];
+
 const practices = [
   ["命令", "“把这个递过来”依赖姿势、工具、训练和可见的完成。"],
   ["报告", "“门开了”不是贴标签，而是在共同场景里改变别人的行动。"],
@@ -117,6 +174,13 @@ const hudCount = document.querySelector("#hudCount");
 const hudTitle = document.querySelector("#hudTitle");
 const hudThesis = document.querySelector("#hudThesis");
 const globalPercent = document.querySelector("#globalPercent");
+const exampleTabs = document.querySelector("#exampleTabs");
+const exampleSource = document.querySelector("#exampleSource");
+const exampleTitle = document.querySelector("#exampleTitle");
+const exampleBody = document.querySelector("#exampleBody");
+const exampleVisual = document.querySelector("#exampleVisual");
+const exampleAction = document.querySelector("#exampleAction");
+const exampleHint = document.querySelector("#exampleHint");
 const practiceBoard = document.querySelector("#practiceBoard");
 const useWord = document.querySelector("#useWord");
 const useList = document.querySelector("#useList");
@@ -136,6 +200,8 @@ let active = chapters[0];
 let localProgress = 0;
 let points = [];
 let reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let activeExampleIndex = 1;
+let exampleStep = 0;
 
 function clamp(value, min = 0, max = 1) {
   return Math.min(max, Math.max(min, value));
@@ -148,7 +214,27 @@ function createEl(tag, className, text) {
   return el;
 }
 
+function visualEl(className, text, style = {}) {
+  const el = createEl("span", className, text);
+  Object.entries(style).forEach(([key, value]) => el.style.setProperty(key, value));
+  return el;
+}
+
 function populateStaticPanels() {
+  exampleTabs.replaceChildren(
+    ...classicExamples.map((example, index) => {
+      const tab = createEl("button", "example-tab", example.label);
+      tab.type = "button";
+      tab.setAttribute("aria-pressed", String(index === activeExampleIndex));
+      tab.addEventListener("click", () => {
+        activeExampleIndex = index;
+        exampleStep = 0;
+        renderExampleStage();
+      });
+      return tab;
+    }),
+  );
+
   practiceBoard.replaceChildren(
     ...practices.map(([title, text]) => {
       const cell = createEl("article", "practice-cell");
@@ -181,6 +267,121 @@ function populateStaticPanels() {
       tile.append(createEl("b", "", title), createEl("span", "", text));
       return tile;
     }),
+  );
+}
+
+function renderExampleStage() {
+  const example = classicExamples[activeExampleIndex];
+  const step = exampleStep % 7;
+  exampleSource.textContent = example.source;
+  exampleTitle.textContent = example.title;
+  exampleBody.textContent = example.body;
+  exampleAction.textContent = example.action;
+  exampleHint.textContent = example.hint;
+  exampleVisual.dataset.example = example.id;
+  exampleVisual.style.setProperty("--stage-x", `${32 + step * 8}%`);
+  exampleVisual.style.setProperty("--stage-y", `${42 + Math.sin(step) * 18}%`);
+  document.querySelectorAll(".example-tab").forEach((tab, index) => {
+    tab.classList.toggle("is-active", index === activeExampleIndex);
+    tab.setAttribute("aria-pressed", String(index === activeExampleIndex));
+  });
+
+  if (example.id === "augustine") renderAugustine(step);
+  if (example.id === "builders") renderBuilders(step);
+  if (example.id === "games") renderGamesExample(step);
+  if (example.id === "plus") renderPlus(step);
+  if (example.id === "diary") renderDiary(step);
+  if (example.id === "beetle") renderBeetle(step);
+}
+
+function renderAugustine(step) {
+  const apples = Array.from({ length: 9 }, (_, index) =>
+    visualEl("apple", String(index + 1), {
+      "--x": `${28 + (index % 3) * 18}%`,
+      "--y": `${27 + Math.floor(index / 3) * 20}%`,
+    }),
+  );
+  apples.forEach((apple, index) => apple.classList.toggle("is-picked", index < Math.min(5, step + 1)));
+  exampleVisual.replaceChildren(...apples, visualEl("slip", "five / red / apples"));
+}
+
+function renderBuilders(step) {
+  const materials = ["block", "pillar", "slab", "beam"];
+  const called = step % materials.length;
+  const shapes = materials.map((name, index) =>
+    visualEl("shape", name, {
+      "--x": `${24 + index * 17}%`,
+      "--y": `${62 - (index % 2) * 18}%`,
+      "--lift": index === called ? "-18px" : "0px",
+    }),
+  );
+  shapes[called].classList.add("is-called");
+  exampleVisual.replaceChildren(visualEl("call-line", `A calls: ${materials[called]}`), ...shapes);
+}
+
+function renderGamesExample(step) {
+  const items = [
+    ["chess", "规则"],
+    ["tag", "身体"],
+    ["cards", "风险"],
+    ["ball", "技巧"],
+    ["riddle", "语言"],
+  ];
+  exampleVisual.replaceChildren(
+    ...items.map(([name, trait], index) => {
+      const node = visualEl("box-card", `${name}\n${trait}`, {
+        "--x": `${22 + (index % 3) * 28}%`,
+        "--y": `${28 + Math.floor(index / 3) * 34}%`,
+        "--r": `${(index - 2) * 4}deg`,
+      });
+      node.classList.toggle("is-called", index === step % items.length || (index + 2) % items.length === step % items.length);
+      return node;
+    }),
+    visualEl("trait-pill", `相似点：${items[step % items.length][1]}`, { "--x": "70%", "--y": "78%" }),
+  );
+}
+
+function renderPlus(step) {
+  const sequence = [2, 4, 6, 8, 10, 12, 1000, step > 4 ? 1004 : 1002];
+  exampleVisual.replaceChildren(
+    ...sequence.map((number, index) => {
+      const item = visualEl("series-number", String(number), { "--x": `${12 + index * 11}%` });
+      item.classList.toggle("is-lit", index <= step);
+      return item;
+    }),
+    visualEl("public-use", step > 4 ? "纠错：你说“同样”，但我们要看训练中的“同样”怎样被使用。" : "规则看似平滑，问题会在远处显影。"),
+  );
+}
+
+function renderDiary(step) {
+  const marks = ["S", "S", "S?", "S", "?", "S", "S!"];
+  exampleVisual.replaceChildren(
+    ...marks.map((mark, index) => {
+      const item = visualEl("diary-token", mark, {
+        "--x": `${14 + index * 12}%`,
+        "--y": `${38 + (index % 2) * 20}%`,
+        "--r": `${(index - 3) * 3}deg`,
+      });
+      item.classList.toggle("is-lit", index <= step);
+      return item;
+    }),
+    visualEl("public-use", step > 3 ? "公共判准进入：表情、行为、求助、检查。" : "只有私下记号时，没有独立校准。"),
+  );
+}
+
+function renderBeetle(step) {
+  const contents = ["甲", "空", "?", "光"];
+  exampleVisual.replaceChildren(
+    ...contents.map((content, index) => {
+      const box = visualEl("beetle-box", "", {
+        "--x": `${22 + index * 18}%`,
+        "--y": `${35 + (index % 2) * 24}%`,
+      });
+      box.classList.toggle("is-open", index <= step % 5);
+      box.append(createEl("span", "", content));
+      return box;
+    }),
+    visualEl("public-use", "公共词“甲虫”的用法稳定；盒中私物不是意义的发动机。"),
   );
 }
 
@@ -289,18 +490,56 @@ function resizeCanvas() {
 
 function clearField() {
   const gradient = ctx.createLinearGradient(0, 0, width, height);
-  gradient.addColorStop(0, "#050606");
-  gradient.addColorStop(0.56, "#0b0e0d");
+  gradient.addColorStop(0, "#07110e");
+  gradient.addColorStop(0.42, "#15140d");
+  gradient.addColorStop(0.78, "#11181a");
   gradient.addColorStop(1, "#050606");
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, width, height);
 
-  ctx.globalAlpha = 0.16;
+  drawManuscriptPlate();
+
+  ctx.globalAlpha = 0.22;
   ctx.fillStyle = active.accent;
   ctx.beginPath();
   ctx.arc(width * (0.22 + localProgress * 0.48), height * 0.34, Math.min(width, height) * 0.32, 0, Math.PI * 2);
   ctx.fill();
   ctx.globalAlpha = 1;
+}
+
+function drawManuscriptPlate() {
+  ctx.save();
+  ctx.globalAlpha = 0.11;
+  ctx.strokeStyle = "#efe7d0";
+  ctx.lineWidth = 1;
+  const margin = Math.min(width, height) * 0.08;
+  ctx.strokeRect(margin, margin * 1.4, width * 0.32, height * 0.46);
+  ctx.beginPath();
+  ctx.moveTo(margin + width * 0.1, margin * 1.4);
+  ctx.lineTo(margin + width * 0.1, margin * 1.4 + height * 0.46);
+  ctx.moveTo(margin, margin * 1.4 + height * 0.16);
+  ctx.lineTo(margin + width * 0.32, margin * 1.4 + height * 0.16);
+  ctx.stroke();
+
+  const notes = ["§2", "§23", "§66", "§185", "§258", "§293"];
+  ctx.font = `700 ${Math.max(18, Math.min(width, height) * 0.035)}px Georgia, serif`;
+  notes.forEach((note, index) => {
+    const x = width * (0.08 + (index % 3) * 0.14);
+    const y = height * (0.18 + Math.floor(index / 3) * 0.16);
+    ctx.fillStyle = index % 2 ? active.accent : "#efe7d0";
+    ctx.fillText(note, x, y);
+  });
+
+  ctx.globalAlpha = 0.08;
+  ctx.strokeStyle = active.accent;
+  for (let i = 0; i < 6; i += 1) {
+    const y = height * (0.18 + i * 0.11 + localProgress * 0.02);
+    ctx.beginPath();
+    ctx.moveTo(width * 0.58, y);
+    ctx.bezierCurveTo(width * 0.66, y - 36, width * 0.74, y + 36, width * 0.88, y);
+    ctx.stroke();
+  }
+  ctx.restore();
 }
 
 function drawDust() {
@@ -515,8 +754,17 @@ const observer = new IntersectionObserver(
 sectionEls.forEach((section) => observer.observe(section));
 window.addEventListener("resize", resizeCanvas);
 window.addEventListener("scroll", updateScrollState, { passive: true });
+exampleAction.addEventListener("click", () => {
+  exampleStep += 1;
+  renderExampleStage();
+});
+exampleVisual.addEventListener("click", () => {
+  exampleStep += 1;
+  renderExampleStage();
+});
 
 populateStaticPanels();
+renderExampleStage();
 resizeCanvas();
 updateScrollState();
 animate();

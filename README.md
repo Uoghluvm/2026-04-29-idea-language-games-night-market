@@ -16,14 +16,28 @@ https://uoghluvm.github.io/2026-04-29-idea-language-games-night-market/
 - 私人语言批判：完全私有的符号缺少可校准的正确性标准。
 - 生活形式：语言扎根在制度、身体、习惯、仪式和日常场景中。
 
-视觉方向是夜间城市、公共标识、工地/诊室/饭桌/地铁的低光场景，加上程序生成的概念画布。滚动会改变背景画布、HUD、家族相似网络、规则轨道、日记符号和生活形式网格。
+视觉方向从纯黑夜景改成深绿黑板、纸张纹理、手稿编号、课堂图示和低光城市标识的混合画面。滚动会改变背景画布、HUD、家族相似网络、规则轨道、日记符号和生活形式网格；首屏右侧也有可点击的“经典例子实验台”。
+
+## Classic Examples Used
+
+页面使用以下《哲学研究》经典例子做原创改写和交互化处理，并在界面里标注出处：
+
+- §1：五个红苹果/购物纸条例子，用来拆开“词语只是名称”的图像。
+- §2：建筑工人语言游戏，展示词语如何作为动作提示运作。
+- §23：语言游戏清单，展示命令、报告、提问、玩笑、祈祷、道歉等不同活动。
+- §§65–71：游戏与家族相似性。
+- §185：+2 规则遵循例子。
+- §258：私人感觉日记 “S”。
+- §293：甲虫盒子。
+
+这些不是原文长引，而是标注章节来源的原创解释、微文案和动态图示。
 
 ## Tech Notes
 
 - Static HTML, CSS, and vanilla JavaScript.
 - Full-window Canvas scene engine tied to scroll progress.
 - IntersectionObserver-driven section reveals.
-- Generated DOM panels for language games, use cases, family resemblance traits, rule-following sequence, private-language diary marks, and forms of life.
+- Clickable hero apparatus for Wittgenstein's classic examples, plus generated DOM panels for language games, use cases, family resemblance traits, rule-following sequence, private-language diary marks, and forms of life.
 - No framework, CDN, web font, external image, audio, quote, or runtime network request.
 
 ## Run
