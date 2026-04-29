@@ -4,6 +4,9 @@ A daily static art website for **later Wittgenstein's language games**, staged a
 a nocturnal night-market and transit board where ordinary words change their
 meaning by use.
 
+Live site:
+https://uoghluvm.github.io/2026-04-29-idea-language-games-night-market/
+
 ## Concept
 
 The site treats language games as a public, lived practice rather than a cold
