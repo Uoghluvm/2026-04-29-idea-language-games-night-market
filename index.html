@@ -1,138 +1,234 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hans">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="A procedural static website about later Wittgenstein's language games, staged as a nocturnal market of ordinary uses."
+      content="一个围绕后期维特根斯坦语言游戏、家族相似性、规则遵循与私人语言批判的滚动式静态网站。"
     />
-    <title>Night Market for Meaning | Language Games</title>
+    <title>语言在使用中 | 后期维特根斯坦</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <canvas id="signalCanvas" aria-hidden="true"></canvas>
+    <canvas id="field" aria-hidden="true"></canvas>
+    <div class="scroll-progress" aria-hidden="true"><span id="scrollBar"></span></div>
 
-    <header class="site-header" aria-label="Project header">
-      <a class="mark" href="#top" aria-label="Night Market for Meaning">
-        <span class="mark-grid" aria-hidden="true"></span>
-        <span>Night Market for Meaning</span>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="回到开头">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>语言在使用中</span>
       </a>
-      <nav class="section-links" aria-label="Sections">
-        <a href="#market">Market</a>
-        <a href="#routes">Routes</a>
-        <a href="#family">Family</a>
+      <nav class="nav-links" aria-label="章节">
+        <a href="#games">游戏</a>
+        <a href="#use">使用</a>
+        <a href="#family">亲缘</a>
+        <a href="#rules">规则</a>
+        <a href="#private">私人</a>
       </nav>
     </header>
 
+    <aside class="concept-hud" aria-live="polite">
+      <p class="hud-count" id="hudCount">00 / 07</p>
+      <h2 id="hudTitle">准备入场</h2>
+      <p id="hudThesis">滚动会改变画布、词义、亲缘网络和规则轨道。</p>
+    </aside>
+
     <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
+      <section class="hero" data-scene="threshold" aria-labelledby="hero-title">
         <div class="hero-copy">
-          <p class="kicker">Later Wittgenstein / language games</p>
-          <h1 id="hero-title">Words after midnight, meaning by use.</h1>
+          <p class="eyebrow">后期维特根斯坦 / Philosophical Investigations</p>
+          <h1 id="hero-title">不要问词的本质。看它怎样被使用。</h1>
           <p class="lede">
-            A public room for ordinary words: each token changes its work when it
-            crosses a counter, a platform, a family table, or a stage door.
+            这是一个可滚动的语言游戏剧场：词语不是贴在物上的标签，
+            而是在命令、请求、玩笑、祈祷、测量、道歉和纠错中取得工作。
           </p>
         </div>
-
-        <section class="meaning-lab" id="market" aria-label="Interactive language game">
-          <div class="lab-topline">
-            <p class="lab-label">Context rail</p>
-            <div class="status-light" aria-hidden="true">
-              <span></span><span></span><span></span>
-            </div>
+        <div class="opening-instrument" aria-label="动态概念仪表">
+          <div class="instrument-top">
+            <span>ordinary use</span>
+            <span id="globalPercent">0%</span>
           </div>
-
-          <div class="context-rail" id="contextRail" aria-label="Contexts"></div>
-
-          <article class="readout" aria-live="polite">
-            <div class="readout-primary">
-              <p class="readout-label">Current use</p>
-              <h2 id="wordTitle">light</h2>
-              <p id="utterance" class="utterance"></p>
-            </div>
-            <dl class="readout-meta">
-              <div>
-                <dt>Scene</dt>
-                <dd id="sceneValue"></dd>
-              </div>
-              <div>
-                <dt>Work</dt>
-                <dd id="workValue"></dd>
-              </div>
-              <div>
-                <dt>Rule feel</dt>
-                <dd id="ruleValue"></dd>
-              </div>
-            </dl>
-          </article>
-
-          <div class="word-deck" id="wordDeck" aria-label="Word tokens"></div>
-
-          <div class="meter-row" aria-label="Simulated pressure meters">
-            <div class="meter" style="--level: 44%"><span></span></div>
-            <div class="meter" style="--level: 72%"><span></span></div>
-            <div class="meter" style="--level: 31%"><span></span></div>
-            <div class="meter" style="--level: 60%"><span></span></div>
-            <button class="shuffle-button" id="shuffleButton" type="button">reshuffle use</button>
+          <div class="word-orbit" aria-hidden="true">
+            <span>说</span><span>做</span><span>懂</span><span>改</span>
           </div>
-        </section>
-      </section>
-
-      <section class="route-band" id="routes" aria-labelledby="routes-title">
-        <div class="route-copy">
-          <p class="kicker">Rules in traffic</p>
-          <h2 id="routes-title">The same word takes different exits.</h2>
-        </div>
-        <div class="route-wall" aria-label="Route board">
-          <ol class="dispatch-list" id="dispatchList"></ol>
+          <p>
+            向下滚动：每一段都会把同一个“意义”问题放进不同的生活场景里。
+          </p>
         </div>
       </section>
 
-      <section class="scroll-sequence" aria-label="Scroll sequence">
-        <div class="sequence-sticky">
-          <div class="rule-strip" aria-hidden="true">
-            <span>naming</span>
-            <span>asking</span>
-            <span>repairing</span>
-            <span>counting</span>
-            <span>joking</span>
-            <span>refusing</span>
+      <section class="thesis-strip" aria-label="核心主题">
+        <p>
+          主题不是“维特根斯坦氛围”，而是后期维特根斯坦的一个明确转向：
+          从寻找语言的隐藏本质，转向观察语言在公共实践中的用途。
+        </p>
+      </section>
+
+      <section
+        class="chapter"
+        id="games"
+        data-mode="games"
+        data-index="1"
+        aria-labelledby="games-title"
+      >
+        <div class="chapter-inner">
+          <div class="chapter-copy">
+            <p class="chapter-kicker">01 / language-games</p>
+            <h2 id="games-title">语言游戏不是比喻装饰，是把话语放回活动现场。</h2>
+            <p>
+              一个词的意义要看它在什么活动里被训练、期待、误解和纠正。
+              命令、报告、提问、讲笑话、祈祷、讨价还价、给孩子起名，都不是同一套抽象机器。
+            </p>
           </div>
-          <div class="sequence-grid">
-            <div class="sequence-frame">
-              <span class="frame-line"></span>
-              <span class="frame-line"></span>
-              <span class="frame-line"></span>
-              <span class="frame-line"></span>
+          <div class="practice-board" id="practiceBoard" aria-label="语言游戏活动面板"></div>
+        </div>
+      </section>
+
+      <section
+        class="chapter"
+        id="use"
+        data-mode="use"
+        data-index="2"
+        aria-labelledby="use-title"
+      >
+        <div class="chapter-inner">
+          <div class="chapter-copy">
+            <p class="chapter-kicker">02 / meaning as use</p>
+            <h2 id="use-title">“懂一个词”不是盯住一个影像，而是会继续使用它。</h2>
+            <p>
+              同一个词穿过不同场景，会承担不同工作。它可能是许可、方向、证据、费用、动作提示，
+              或一次关系修复。意义在用法里显形，不在词背后的私人小盒子里。
+            </p>
+          </div>
+          <div class="use-switcher">
+            <div class="use-word">
+              <span>current word</span>
+              <strong id="useWord">right</strong>
             </div>
-            <div class="sequence-copy">
-              <p class="kicker">No private neon</p>
-              <h2>Meaning is not stored behind the face.</h2>
-              <p>
-                It happens at the counter: the receipt, the glance, the repeated
-                mistake, the corrected order, the joke that only lands because a
-                room already knows the game.
-              </p>
-            </div>
+            <ol class="use-list" id="useList" aria-label="同词不同用法"></ol>
           </div>
         </div>
       </section>
 
-      <section class="family-band" id="family" aria-labelledby="family-title">
-        <div class="family-copy">
-          <p class="kicker">Family resemblance</p>
-          <h2 id="family-title">A word keeps relatives, not one hidden skeleton.</h2>
+      <section
+        class="chapter"
+        id="family"
+        data-mode="family"
+        data-index="3"
+        aria-labelledby="family-title"
+      >
+        <div class="chapter-inner">
+          <div class="chapter-copy">
+            <p class="chapter-kicker">03 / family resemblance</p>
+            <h2 id="family-title">概念不一定有共同骨架；它们可能只是亲戚。</h2>
+            <p>
+              “游戏”不是靠一个所有例子都共享的特征站稳。棋、追逐、赌局、独奏练习、文字游戏，
+              像一家人：眼神像这个，步态像那个，声调又像另一个。
+            </p>
+          </div>
+          <div class="family-lab">
+            <div class="family-map" id="familyMap" aria-label="家族相似性网络"></div>
+            <div class="trait-ledger" id="traitLedger" aria-label="交叠特征"></div>
+          </div>
         </div>
-        <div class="family-grid" id="familyGrid"></div>
+      </section>
+
+      <section
+        class="chapter"
+        id="rules"
+        data-mode="rules"
+        data-index="4"
+        aria-labelledby="rules-title"
+      >
+        <div class="chapter-inner">
+          <div class="chapter-copy">
+            <p class="chapter-kicker">04 / rule-following</p>
+            <h2 id="rules-title">规则不会自己替你走下一步。</h2>
+            <p>
+              任何规则都能被新的解释拖走。真正让“继续同样做”成立的，不是脑内多藏一条解释，
+              而是训练、示范、纠错和共同生活里稳定下来的判断。
+            </p>
+          </div>
+          <div class="rule-machine" aria-label="规则遵循轨道">
+            <div class="rule-readout">
+              <span>instruction</span>
+              <strong>+2</strong>
+              <span id="ruleVerdict">继续：2, 4, 6, 8...</span>
+            </div>
+            <div class="rule-track" id="ruleTrack"></div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="chapter"
+        id="private"
+        data-mode="private"
+        data-index="5"
+        aria-labelledby="private-title"
+      >
+        <div class="chapter-inner">
+          <div class="chapter-copy">
+            <p class="chapter-kicker">05 / private language</p>
+            <h2 id="private-title">一个只由我独自校准的符号，没有“用对了”的尺。</h2>
+            <p>
+              这不是否认疼痛、情绪或内心生活。问题是：如果符号的判准完全藏在个人瞬间里，
+              我就无法区分“记对了”和“以为自己记对了”。
+            </p>
+          </div>
+          <div class="diary-machine">
+            <div class="diary-strip" id="diaryStrip" aria-label="私人日记符号"></div>
+            <p>
+              当公共判准进入，记号才开始承担可纠正的角色：表情、用药、求助、检查、别人能学会的反应。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="chapter"
+        id="forms"
+        data-mode="forms"
+        data-index="6"
+        aria-labelledby="forms-title"
+      >
+        <div class="chapter-inner">
+          <div class="chapter-copy">
+            <p class="chapter-kicker">06 / forms of life</p>
+            <h2 id="forms-title">语言不是悬空的系统；它住在生活形式里。</h2>
+            <p>
+              票据、家规、病历、课堂、神龛、牌桌、工地、厨房，这些不是语言的外部背景。
+              它们是让一句话能被听懂、被接住、被反驳的地面。
+            </p>
+          </div>
+          <div class="form-grid" id="formGrid" aria-label="生活形式网格"></div>
+        </div>
+      </section>
+
+      <section
+        class="chapter final-chapter"
+        id="therapy"
+        data-mode="therapy"
+        data-index="7"
+        aria-labelledby="therapy-title"
+      >
+        <div class="chapter-inner">
+          <div class="chapter-copy">
+            <p class="chapter-kicker">07 / philosophy as therapy</p>
+            <h2 id="therapy-title">哲学不是给语言加王冠，而是把卡住的词送回街上。</h2>
+            <p>
+              后期维特根斯坦最锋利的地方，不是建立一个宏大理论，而是让我们看见：
+              很多困惑来自词语离开了它的日常工作岗位。把它放回去，雾会散一点。
+            </p>
+          </div>
+          <div class="closing-panel">
+            <p>本页所有文字、图形和动画均为原创解释与程序生成；不含书页引文、影像、音频或第三方图片。</p>
+            <a href="#top">重新进入语言游戏</a>
+          </div>
+        </div>
       </section>
     </main>
-
-    <footer class="site-footer">
-      <p>Original procedural artwork and text. No quotations, audio, covers, or third-party images.</p>
-      <a href="#top">return to market</a>
-    </footer>
 
     <script src="./script.js"></script>
   </body>
